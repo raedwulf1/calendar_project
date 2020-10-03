@@ -1,0 +1,51 @@
+
+
+.calendar-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+
+  --header-color: #057ef7;
+  --borders-color: #dee2e6;
+}
+
+.calendar-table thead th {
+  vertical-align: bottom;
+  border: 2px solid var(--borders-color);
+  background-color: var(--header-color);
+  color: white;
+  width: 14.2%;
+}
+
+.calendar-table td, .calendar-table th {
+  border: 1px solid var(--borders-color);
+}
+
+.calendar-table td, .calendar-table th {
+  padding: .75rem;
+  vertical-align: top;
+  border-top: 1px solid var(--borders-color);
+}
+
+.calendar-td {
+  height: 12vh;
+  max-height: 12vh;
+}
+
+.calendar-items-wrapper {
+  margin-left: -10px;
+  margin-right: -10px;
+  overflow-y: auto;
+  max-height: calc(100% - 20px);
+}
+
+.not-current-month-date {
+  background-color: gray;
+}
+
+.calendar-day{
+  overflow: auto;
+}

@@ -1,0 +1,26 @@
+<table class='calendar-table' *ngIf="daysInCalendar">
+  <thead>
+    <tr>
+      <th>Sunday</th>
+      <th>Monday</th>
+      <th>Tuesday</th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th>Friday</th>
+      <th>Saturday</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of daysInCalendar | trimArray: 7; let i = index">
+      <td class="calendar-td"
+       [ngClass]="{'not-current-month-date': day.month() !== selectedMonth}"
+        *ngFor="let day of row; let j = index"
+        >
+        <div class="calendar-day">
+          <strong>{{day.date()}}</strong>
+          <app-day-reminder></app-day-reminder>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
