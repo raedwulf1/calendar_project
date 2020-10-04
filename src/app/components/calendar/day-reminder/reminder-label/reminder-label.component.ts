@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Reminder } from 'src/app/classes/reminder';
 
 @Component({
   selector: 'app-reminder-label',
@@ -6,10 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reminder-label.component.scss']
 })
 export class ReminderLabelComponent implements OnInit {
-
+  @Input() reminder = new Reminder();
+  @Output() removeReminder = new EventEmitter();
+  @Output() editReminder = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
+  }
+
+  removeReminderAction() {
+    this.removeReminder.emit();
+  }
+
+  editReminderAction() {
+    this.editReminder.emit();
   }
 
 }

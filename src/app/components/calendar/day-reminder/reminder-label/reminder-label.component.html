@@ -1,3 +1,22 @@
-<p>
-  reminder-label works!
-</p>
+  <div class="general-reminder" [ngClass]="{'background-blue': reminder?.color === 'blue'}">
+    <button (click)="removeReminderAction()" mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button (click)="editReminderAction()" mat-icon-button>
+      <mat-icon>create</mat-icon>
+    </button>
+    <div>
+      Text: {{ reminder?.text }} &nbsp;
+      City: {{ reminder?.city.name }} &nbsp;
+      Time: {{ reminder?.time.hour }}:{{ reminder?.time.minutes }}
+    </div>
+  </div>
+<!-- <div>
+  <mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
+    <mat-chip [ngClass]="{'background-blue': reminder?.color === 'blue'}">
+      {{ reminder?.text }} 
+      {{ reminder?.city.name }}
+      {{ reminder?.time.hour }}:{{ reminder?.time.minutes }}  
+    </mat-chip>
+  </mat-chip-list>
+</div> -->

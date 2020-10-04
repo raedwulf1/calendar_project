@@ -18,7 +18,7 @@
         >
         <div class="calendar-day">
           <strong>{{day.date()}}</strong>
-          <app-day-reminder></app-day-reminder>
+          <app-day-reminder [selectedDay]="day"></app-day-reminder>
         </div>
       </td>
     </tr>

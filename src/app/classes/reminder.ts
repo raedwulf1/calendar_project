@@ -1,6 +1,14 @@
+import { City } from './city';
+import { TimeHourMinutes } from './time-hour-minutes';
+
 export class Reminder {
-  animal = '';
-  name = '';
+  city = new City();
+  day = new Date();
+  time = new TimeHourMinutes();
+  color = '';
+  text = '';
+  weather = {};
+  
   constructor() {
   }
 

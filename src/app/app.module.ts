@@ -16,7 +16,12 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
 import { ReminderLabelComponent } from './components/calendar/day-reminder/reminder-label/reminder-label.component';
+import { CityService } from './services/city.service';
 
 @NgModule({
   declarations: [
@@ -37,10 +42,15 @@ import { ReminderLabelComponent } from './components/calendar/day-reminder/remin
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatIconModule
   ],
   providers: [
-    WeatherService
+    WeatherService,
+    CityService
   ],
   bootstrap: [AppComponent]
 })
