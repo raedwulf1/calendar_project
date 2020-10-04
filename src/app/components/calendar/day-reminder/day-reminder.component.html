@@ -1,6 +1,6 @@
 <div>
-  <div *ngIf="reminders.length > 0">
-    <div *ngFor="let reminder of reminders">
+  <div class="reminders-list" *ngIf="reminders.length > 0">
+    <div class="reminders" *ngFor="let reminder of reminders">
       <app-reminder-label 
       *ngIf="reminder"
       [reminder]="reminder"
@@ -9,5 +9,7 @@
     </app-reminder-label>
     </div>
   </div>
-  <button mat-button (click)="openReminderDialog()">New Reminder +</button>
+  <div class="center-text">
+    <button mat-button (click)="openReminderDialog()">New Reminder +</button>
+  </div>
 </div>

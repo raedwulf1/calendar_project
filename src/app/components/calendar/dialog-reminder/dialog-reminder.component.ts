@@ -6,6 +6,7 @@ import { debounce } from 'rxjs/operators';
 import { ApiCity } from 'src/app/classes/api-city';
 import { City } from 'src/app/classes/city';
 import { Reminder } from 'src/app/classes/reminder';
+import { TimeHourMinutes } from 'src/app/classes/time-hour-minutes';
 import { CityService } from 'src/app/services/city.service';
 
 @Component({
@@ -16,7 +17,7 @@ import { CityService } from 'src/app/services/city.service';
 export class DialogReminderComponent implements OnInit, OnDestroy {
 
   time: string;
-  colorOptions = ['blue', 'red', 'green'];
+  colorOptions = ['Blue', 'Red', 'Green', 'Pink', 'Violet', 'Wheat'];
   cityString = '';
   selectedCity: City;
   locationsFiltered: City[] = [];
@@ -30,6 +31,7 @@ export class DialogReminderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cityString = this.data.city ? this.data.city.name : '';
+    this.time = this.data.time ? this.data.time.getStringTime() : '00:00';
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent ) {
@@ -38,11 +40,11 @@ export class DialogReminderComponent implements OnInit, OnDestroy {
   }
 
   onCityChanged() {
-    this.subs = this.cityService.get(this.cityString)
-    .pipe(debounce(() => timer(200)))
-      .subscribe((value) => {
-        this.buildAutoCompleteCities(value);
-      });
+    // this.subs = this.cityService.get(this.cityString)
+    // .pipe(debounce(() => timer(200)))
+    //   .subscribe((value) => {
+    //     this.buildAutoCompleteCities(value);
+    //   });
   }
 
   cancelDialog(): void {
@@ -50,9 +52,10 @@ export class DialogReminderComponent implements OnInit, OnDestroy {
   }
 
   saveDialog(): void {
-    if (!!this.selectedCity && !!this.data.text && !!this.time) {
-      this.data.time = {hour: Number(this.time.split(':')[0]), minutes: Number(this.time.split(':')[1])};
-      this.data.city = this.selectedCity;
+    if ((!!this.selectedCity || !!this.cityString) && !!this.data.text && !!this.time) {
+      // this.data.time = {hour: Number(this.time.split(':')[0]), minutes: Number(this.time.split(':')[1])};
+      this.data.time = new TimeHourMinutes(Number(this.time.split(':')[0]), Number(this.time.split(':')[1]));
+      this.data.city = this.selectedCity || {name: this.cityString, apiCityKey: ''};
       this.dialogRef.close(this.data);
     }
   }

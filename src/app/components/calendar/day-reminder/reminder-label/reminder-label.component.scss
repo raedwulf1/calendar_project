@@ -1,9 +1,46 @@
-.background-blue{
-  background-color: blue;
-}
-
 .general-reminder {
   background-color: wheat;
   padding: 10px;
-  border-radius: 21px;
+  font-weight: bolder;
+  p{
+    margin: 0;
+  }
+}
+
+.background-blue {
+  background-color: #00b4d8;
+  color: white;
+}
+
+.background-red {
+  background-color: #e63946;
+  color: white;
+}
+
+.background-green {
+  background-color: #06d6a0;
+  color: white;
+}
+
+.background-pink{
+  background-color: #ff87ab;
+  color: white;
+}
+
+.background-violet {
+  background-color: #9d4edd;
+  color: white;
+}
+
+.label-buttons {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  top: 0;
+  opacity: 0.5;
+}
+
+.label-buttons:hover{
+  opacity: 1;
 }

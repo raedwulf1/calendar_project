@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Reminder } from 'src/app/classes/reminder';
 import { DialogReminderComponent } from '../dialog-reminder/dialog-reminder.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CityService } from 'src/app/services/city.service';
+import { WeatherService } from 'src/app/services/weather.service';
 
 @Component({
   selector: 'app-day-reminder',
@@ -13,7 +15,9 @@ export class DayReminderComponent implements OnInit {
   @Input() reminders: Reminder[] = [];
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private cityService: CityService,
+    private weatherService: WeatherService
   ) { }
 
   ngOnInit() {
@@ -28,10 +32,23 @@ export class DayReminderComponent implements OnInit {
       data: reminderData
     });
 
-    dialogRef.afterClosed().subscribe((result: Reminder) => {
+    dialogRef.afterClosed().subscribe( (result: Reminder) => {
       if (!!result){
-        this.checkForEditionOrPush(editableReminder, result);
-        this.sortReminders();
+        this.cityService.getLatAndLon(result.city.name).subscribe((value) => {
+          if (value) {
+            result.city.lat = value.coord.lat;
+            result.city.lon = value.coord.lon;
+            this.getWeatherAndUpdateArray(editableReminder, result);
+          } else {
+            this.checkForEditionOrPush(editableReminder, result);
+            this.sortReminders();
+          }
+        }, (err) => {
+          console.log(err);
+          this.checkForEditionOrPush(editableReminder, result);
+          this.sortReminders();
+        }
+        );
       }
     });
   }
@@ -63,5 +80,28 @@ export class DayReminderComponent implements OnInit {
         return a.time.hour - b.time.hour;
       }
     });
+  }
+
+  getWeatherAndUpdateArray(editableReminder: Reminder, reminder: Reminder) {
+    if (!!reminder && !!reminder.city.lat && !!reminder.city.lon) {
+      this.weatherService.getOpenWAPI(reminder.city.lat, reminder.city.lon)
+        .subscribe((value) => {
+          console.log(reminder);
+          if (!!value.daily && value.daily.length > 0) {
+            const timeIndex = value.daily.findIndex((day) => {
+              const date = new Date(day.dt * 1000);
+              const isSameDate = date.getDate() === reminder.day.date()
+                && date.getMonth() === reminder.day.month()
+                && date.getFullYear() === reminder.day.year();
+              return isSameDate;
+            });
+            if (timeIndex > -1) {
+              reminder.weather = value.daily[timeIndex].weather[0].main;
+            }
+          }
+          this.checkForEditionOrPush(editableReminder, reminder);
+          this.sortReminders();
+        });
+    }
   }
 }
