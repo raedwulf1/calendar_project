@@ -1,18 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Reminder } from 'src/app/classes/reminder';
 import { DialogReminderComponent } from '../dialog-reminder/dialog-reminder.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CityService } from 'src/app/services/city.service';
 import { WeatherService } from 'src/app/services/weather.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-day-reminder',
   templateUrl: './day-reminder.component.html',
   styleUrls: ['./day-reminder.component.scss']
 })
-export class DayReminderComponent implements OnInit {
+export class DayReminderComponent implements OnInit,OnDestroy {
   @Input() selectedDay: Date;
   @Input() reminders: Reminder[] = [];
+  subs = new SubSink();
 
   constructor(
     public dialog: MatDialog,
@@ -32,9 +34,9 @@ export class DayReminderComponent implements OnInit {
       data: reminderData
     });
 
-    dialogRef.afterClosed().subscribe( (result: Reminder) => {
+    this.subs.sink = dialogRef.afterClosed().subscribe( (result: Reminder) => {
       if (!!result){
-        this.cityService.getLatAndLon(result.city.name).subscribe((value) => {
+        this.subs.sink = this.cityService.getLatAndLon(result.city.name).subscribe((value) => {
           if (value) {
             result.city.lat = value.coord.lat;
             result.city.lon = value.coord.lon;
@@ -58,6 +60,10 @@ export class DayReminderComponent implements OnInit {
     if (index > -1) {
       this.reminders.splice(index, 1);
     }
+  }
+
+  removeAllReminders() {
+    this.reminders = [];
   }
 
   checkForEditionOrPush(oldReminder: Reminder, newReminder: Reminder): void{
@@ -84,9 +90,8 @@ export class DayReminderComponent implements OnInit {
 
   getWeatherAndUpdateArray(editableReminder: Reminder, reminder: Reminder) {
     if (!!reminder && !!reminder.city.lat && !!reminder.city.lon) {
-      this.weatherService.getOpenWAPI(reminder.city.lat, reminder.city.lon)
+      this.subs.sink = this.weatherService.getOpenWAPI(reminder.city.lat, reminder.city.lon)
         .subscribe((value) => {
-          console.log(reminder);
           if (!!value.daily && value.daily.length > 0) {
             const timeIndex = value.daily.findIndex((day) => {
               const date = new Date(day.dt * 1000);
@@ -103,5 +108,9 @@ export class DayReminderComponent implements OnInit {
           this.sortReminders();
         });
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

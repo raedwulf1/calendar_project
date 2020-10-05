@@ -1,12 +1,18 @@
-/* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { CityService } from './city.service';
 
 describe('Service: City', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CityService]
+      providers: [
+        CityService
+      ],
+      imports: [
+        HttpClientTestingModule
+      ]
     });
   });
 

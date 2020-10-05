@@ -11,6 +11,7 @@ export class MainCalendarComponent implements OnInit {
   selectedMonth = 0;
   selectedYear = 0;
   momentDate = moment().date(1);
+  displayedMonth
   constructor() { }
 
   ngOnInit() {
@@ -23,7 +24,7 @@ export class MainCalendarComponent implements OnInit {
     let result = [];
     const CELLS_IN_CALENDAR = 42;
     const initDay = momentData.day();
-    console.log(initDay);
+    // console.log(initDay);
     for (let i = 0 - initDay; i < CELLS_IN_CALENDAR - initDay; i++) {
       result.push(moment().date(momentData.date() + i));
     }

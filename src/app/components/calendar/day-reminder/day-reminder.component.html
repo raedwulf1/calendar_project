@@ -1,5 +1,6 @@
 <div>
   <div class="reminders-list" *ngIf="reminders.length > 0">
+    <button mat-button class="remove-all" (click)="removeAllReminders()"><mat-icon>delete</mat-icon></button>
     <div class="reminders" *ngFor="let reminder of reminders">
       <app-reminder-label 
       *ngIf="reminder"

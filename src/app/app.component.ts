@@ -9,7 +9,7 @@ import { WeatherService } from './services/weather.service';
 export class AppComponent implements OnInit {
   title = 'calendar';
 
-  constructor(private weatherService: WeatherService) {
+  constructor() {
   }
 
   ngOnInit(): void {

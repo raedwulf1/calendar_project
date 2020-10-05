@@ -12,15 +12,12 @@ export class ReminderLabelComponent implements OnInit, OnChanges {
   @Output() removeReminder = new EventEmitter();
   @Output() editReminder = new EventEmitter();
   constructor(
-    private weatherService: WeatherService
   ) { }
 
   ngOnInit() {
-    // this.getWeather();
   }
 
   ngOnChanges() {
-    // this.getWeather();
   }
 
   removeReminderAction() {
