@@ -11,7 +11,8 @@ export class MainCalendarComponent implements OnInit {
   selectedMonth = 0;
   selectedYear = 0;
   momentDate = moment().date(1);
-  displayedMonth
+  MONTHS = moment.months();
+  displayedMonth = this.MONTHS[this.momentDate.month()];
   constructor() { }
 
   ngOnInit() {
@@ -21,12 +22,12 @@ export class MainCalendarComponent implements OnInit {
   }
 
   calculateDaysforCalendar(momentData: moment.Moment): any[] {
-    let result = [];
+    const result = [];
     const CELLS_IN_CALENDAR = 42;
     const initDay = momentData.day();
-    // console.log(initDay);
     for (let i = 0 - initDay; i < CELLS_IN_CALENDAR - initDay; i++) {
-      result.push(moment().date(momentData.date() + i));
+      result.push(moment().year(this.selectedYear).month(this.selectedMonth).date(momentData.date() + i));
+      console.log(new Date(moment().year(this.selectedYear).month(this.selectedMonth).date(momentData.date() + i).valueOf()));
     }
 
     return result;
@@ -39,8 +40,9 @@ export class MainCalendarComponent implements OnInit {
       this.selectedMonth = 0;
       ++this.selectedYear;
     }
-    this.momentDate.year(this.selectedYear).month(this.selectedMonth);
+    this.momentDate = this.momentDate.year(this.selectedYear).month(this.selectedMonth).date(1);
     this.daysInCalendar = this.calculateDaysforCalendar(this.momentDate);
+    this.displayedMonth = this.MONTHS[this.momentDate.month()];
   }
 
   backwardMonth() {
@@ -50,7 +52,8 @@ export class MainCalendarComponent implements OnInit {
       this.selectedMonth = 11;
       --this.selectedYear;
     }
-    this.momentDate.year(this.selectedYear).month(this.selectedMonth);
+    this.momentDate = this.momentDate.year(this.selectedYear).month(this.selectedMonth).date(1);
     this.daysInCalendar = this.calculateDaysforCalendar(this.momentDate);
+    this.displayedMonth = this.MONTHS[this.momentDate.month()];
   }
 }

@@ -1,9 +1,13 @@
-<p>{{ displayedMonth }}</p>
-<button (click)="forwardMonth()">+month</button>
-<button (click)="backwardMonth()">-month</button>
 
-<app-calendar 
-  [daysInCalendar]="daysInCalendar"
-  [selectedMonth]="selectedMonth"
->
-</app-calendar>
+<div class="main-calendar">
+  <p class="month">{{ displayedMonth }}</p>
+  <div class="calendar-action" >
+    <button mat-button (click)="backwardMonth()"><mat-icon>keyboard_arrow_left</mat-icon></button>
+    <app-calendar 
+    [daysInCalendar]="daysInCalendar"
+    [selectedMonth]="selectedMonth"
+    >
+  </app-calendar>
+  <button mat-button (click)="forwardMonth()"><mat-icon>keyboard_arrow_right</mat-icon></button>
+  </div>
+</div>
