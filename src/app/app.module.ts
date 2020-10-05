@@ -21,8 +21,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { StoreModule } from '@ngrx/store';
 import { ReminderLabelComponent } from './components/calendar/day-reminder/reminder-label/reminder-label.component';
 import { CityService } from './services/city.service';
+import { remindersReducer } from './store/reminders.reducer';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { CityService } from './services/city.service';
     HttpClientModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    StoreModule.forRoot({remindersArray: remindersReducer}),
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -48,7 +52,8 @@ import { CityService } from './services/city.service';
     MatSelectModule,
     MatAutocompleteModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule
   ],
   providers: [
     WeatherService,

@@ -27,7 +27,6 @@ export class MainCalendarComponent implements OnInit {
     const initDay = momentData.day();
     for (let i = 0 - initDay; i < CELLS_IN_CALENDAR - initDay; i++) {
       result.push(moment().year(this.selectedYear).month(this.selectedMonth).date(momentData.date() + i));
-      console.log(new Date(moment().year(this.selectedYear).month(this.selectedMonth).date(momentData.date() + i).valueOf()));
     }
 
     return result;

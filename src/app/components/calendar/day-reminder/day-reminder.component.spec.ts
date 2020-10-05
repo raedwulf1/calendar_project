@@ -13,6 +13,8 @@ import { CityServiceMock } from '../../../testing/mocks/city-service-mock';
 
 import { DayReminderComponent } from './day-reminder.component';
 import { Reminder } from 'src/app/classes/reminder';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('DayReminderComponent', () => {
   const ReminderStub = {
@@ -31,12 +33,12 @@ describe('DayReminderComponent', () => {
   let dialogSpy: jasmine.Spy;
   let cityService: CityService;
   let weatherService: WeatherService;
-
+  const initialState = { reminders: [] };
 
   const dialogRefSpyObj = jasmine.createSpyObj({
       afterClosed: of(ReminderStub), close: null
     });
-  let mockSomeService = {
+  let mockService = {
     getLatAndLon: () => {}
   };
 
@@ -46,10 +48,12 @@ describe('DayReminderComponent', () => {
         DayReminderComponent
       ],
       providers: [
-        { provide: CityService, useValue: mockSomeService }
+        { provide: CityService, useClass: CityServiceMock },
+        provideMockStore({ initialState }),
       ],
       imports: [
         MatDialogModule,
+        MatSnackBarModule,
         HttpClientTestingModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -60,6 +64,9 @@ describe('DayReminderComponent', () => {
     component.reminders = [];
     cityService = TestBed.get(CityService);
     weatherService = TestBed.get(WeatherService);
+    (component as any).store = TestBed.inject(MockStore);
+    (component as any).store.setState({ reminders: [new Reminder()] });
+    spyOn((component as any).store, 'select').and.returnValue(of({ reminders: [new Reminder()]}));
   });
 
   it('should create', () => {
@@ -149,5 +156,17 @@ describe('DayReminderComponent', () => {
     newReminder.text = 'changed text';
     component.checkForEditionOrPush(undefined, newReminder);
     expect(component.reminders).toEqual([newReminder as Reminder]);
+  });
+
+  it('should checkForEditionOrPush should throw error if text is too long', async () => {
+    spyOn(component, 'openSnackBar').and.stub();
+    const generalReminder = ReminderStub;
+    generalReminder.city = {name: 'testCity', lat: 30, lon: 10} as any;
+    generalReminder.day = moment().date(0) as any;
+    generalReminder.text = '123456789ddfddtgscgghftujfgdsrfhfghgshfghfghsdfgcsdsf';
+    const newReminder = generalReminder as any;
+    component.reminders = [];
+    component.checkForEditionOrPush(undefined, newReminder);
+    expect(component.openSnackBar).toHaveBeenCalled();
   });
 });
