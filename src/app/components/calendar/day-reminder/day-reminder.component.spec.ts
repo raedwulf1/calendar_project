@@ -19,8 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 describe('DayReminderComponent', () => {
   const ReminderStub = {
     city: {
-      name: 'testCityReminder',
-      apiCityKey: '',
+      name: 'testCityReminder'
     },
     day: new Date(),
     time: new TimeHourMinutes(0, 0),
@@ -38,9 +37,6 @@ describe('DayReminderComponent', () => {
   const dialogRefSpyObj = jasmine.createSpyObj({
       afterClosed: of(ReminderStub), close: null
     });
-  let mockService = {
-    getLatAndLon: () => {}
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -18,10 +18,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StoreModule } from '@ngrx/store';
 import { ReminderLabelComponent } from './components/calendar/day-reminder/reminder-label/reminder-label.component';
 import { CityService } from './services/city.service';
@@ -50,10 +51,11 @@ import { remindersReducer } from './store/reminders.reducer';
     MatButtonModule,
     MatChipsModule,
     MatSelectModule,
-    MatAutocompleteModule,
     MatIconModule,
     MatCardModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     WeatherService,

@@ -9,6 +9,7 @@ import { SubSink } from 'subsink';
 import { AppState } from 'src/app/store/reminders.reducer';
 import * as RemindersActions from '../../../store/reminder.actions';
 import { Moment } from 'moment';
+import * as moment from 'moment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -20,6 +21,8 @@ export class DayReminderComponent implements OnInit, OnDestroy {
   @Input() selectedDay: Date | Moment;
   @Input() reminders: Reminder[] = [];
   subs = new SubSink();
+  timeToShowReminder;
+  showLoading = false;
 
   constructor(
     public dialog: MatDialog,
@@ -29,9 +32,10 @@ export class DayReminderComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subs.sink = this.store.select('remindersArray').subscribe(reminderState => {
       if (!!reminderState){
+        this.timeToShowReminder = setInterval(() => this.compareCurrentTime(reminderState.reminders), 60000);
         this.reminders = reminderState.reminders.filter((value) => {
           return this.isSameMoment(this.selectedDay as Moment, value.day);
         });
@@ -51,6 +55,7 @@ export class DayReminderComponent implements OnInit, OnDestroy {
 
     this.subs.sink = dialogRef.afterClosed().subscribe( (result: Reminder) => {
       if (!!result){
+        this.setLoading(true);
         this.subs.sink = this.cityService.getLatAndLon(result.city.name).subscribe((value) => {
           if (value) {
             result.city.lat = value.coord.lat;
@@ -70,7 +75,7 @@ export class DayReminderComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeReminder(reminder: Reminder) {
+  removeReminder(reminder: Reminder): void {
     const index = this.reminders.indexOf(reminder);
     if (index > -1) {
       this.reminders.splice(index, 1);
@@ -78,7 +83,7 @@ export class DayReminderComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeAllReminders() {
+  removeAllReminders(): void {
     this.store.dispatch(new RemindersActions.DeleteReminders(this.reminders));
     this.reminders = [];
   }
@@ -97,7 +102,7 @@ export class DayReminderComponent implements OnInit, OnDestroy {
         this.reminders.push(newReminder);
         this.store.dispatch(new RemindersActions.AddReminder(newReminder));
     }
-
+    this.setLoading(false);
   }
 
   sortReminders(): void {
@@ -110,7 +115,7 @@ export class DayReminderComponent implements OnInit, OnDestroy {
     });
   }
 
-  getWeatherAndUpdateArray(editableReminder: Reminder, reminder: Reminder) {
+  getWeatherAndUpdateArray(editableReminder: Reminder, reminder: Reminder): void {
     if (!!reminder && !!reminder.city.lat && !!reminder.city.lon) {
       this.subs.sink = this.weatherService.getOpenWAPI(reminder.city.lat, reminder.city.lon)
         .subscribe((value) => {
@@ -125,12 +130,18 @@ export class DayReminderComponent implements OnInit, OnDestroy {
           }
           this.checkForEditionOrPush(editableReminder, reminder);
           this.sortReminders();
+        }, (err) => {
+          console.log(err);
+          this.setLoading(false);
         });
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subs.unsubscribe();
+    if (this.timeToShowReminder) {
+      clearInterval(this.timeToShowReminder);
+    }
   }
 
   isSameDate(firstDate: Date, secondDate: Moment): boolean {
@@ -145,9 +156,24 @@ export class DayReminderComponent implements OnInit, OnDestroy {
             && firstDate.year() === secondDate.year();
   }
 
-  openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string): void {
     this._snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  compareCurrentTime(reminders: Reminder[]): void {
+    const currentTime = moment();
+    const index = reminders.findIndex(reminder => {
+      return this.isSameMoment(reminder.day, currentTime) && reminder.time.hour === currentTime.hour()
+          && reminder.time.minutes === currentTime.minute();
+    });
+    if (index > -1) {
+      this.openSnackBar(reminders[index].text, '!!!');
+    }
+  }
+
+  setLoading(value: boolean): void{
+    this.showLoading = value;
   }
 }

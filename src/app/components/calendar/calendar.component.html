@@ -13,11 +13,11 @@
   <tbody>
     <tr *ngFor="let row of daysInCalendar | trimArray: 7; let i = index">
       <td class="calendar-td"
-       [ngClass]="{'not-current-month-date': day.month() !== selectedMonth}"
+       [ngClass]="{'not-current-month-date': day.month() !== selectedMonth, 'is-today': isToday(day)}"
         *ngFor="let day of row; let j = index"
         >
         <div class="calendar-day">
-          <strong>{{day.date()}}</strong>
+          <strong [ngClass]="{'old-day': isOldDate(day)}">{{day.date()}}</strong>
           <app-day-reminder [selectedDay]="day"></app-day-reminder>
         </div>
       </td>

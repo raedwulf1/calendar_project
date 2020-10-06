@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainCalendarComponent } from './main-calendar.component';
 
@@ -10,7 +10,7 @@ describe('MainCalendarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         MainCalendarComponent
        ],
       providers: [

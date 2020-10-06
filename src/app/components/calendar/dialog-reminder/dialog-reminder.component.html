@@ -16,15 +16,6 @@
     <input matInput [(ngModel)]="cityString" required>
   </mat-form-field>
 
-  <!-- <mat-form-field class="w-100 mt-25">
-    <input type="text" matInput placeholder="City" [matAutocomplete]="auto" [(ngModel)]="cityString" (keydown)="onCityChanged()">
-    <mat-autocomplete (optionSelected)="onSelectionChanged($event)" #auto="matAutocomplete">
-      <mat-option *ngFor="let elem of locationsFiltered" [value]="elem">
-        {{ elem.name }}
-      </mat-option>
-    </mat-autocomplete> 
-  </mat-form-field>  -->
-
   <mat-form-field>
     <mat-label>Color</mat-label>
     <mat-select [(ngModel)]="data.color">

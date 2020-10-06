@@ -5,7 +5,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Reminder } from 'src/app/classes/reminder';
 import { TimeHourMinutes } from 'src/app/classes/time-hour-minutes';
 import { ReminderMock } from 'src/app/testing/mocks/reminder-mock';
-import * as moment from 'moment';
 
 
 import { DialogReminderComponent } from './dialog-reminder.component';
@@ -51,8 +50,7 @@ describe('DialogReminderComponent', () => {
 
     expect(component.dialogRef.close).toHaveBeenCalledWith({
       city: {
-        name: 'testCityReminder',
-        apiCityKey: ''
+        name: 'testCityReminder'
       },
       day: 'testDate',
       time: new TimeHourMinutes(0, 0),

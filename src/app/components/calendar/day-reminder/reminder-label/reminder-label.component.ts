@@ -1,35 +1,27 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Reminder } from 'src/app/classes/reminder';
-import { WeatherService } from 'src/app/services/weather.service';
 
 @Component({
   selector: 'app-reminder-label',
   templateUrl: './reminder-label.component.html',
   styleUrls: ['./reminder-label.component.scss']
 })
-export class ReminderLabelComponent implements OnInit, OnChanges {
+export class ReminderLabelComponent {
   @Input() reminder = new Reminder();
   @Output() removeReminder = new EventEmitter();
   @Output() editReminder = new EventEmitter();
   constructor(
   ) { }
 
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
-  }
-
-  removeReminderAction() {
+  removeReminderAction(): void {
     this.removeReminder.emit();
   }
 
-  editReminderAction() {
+  editReminderAction(): void {
     this.editReminder.emit();
   }
 
-  getClassBackground() {
+  getClassBackground(): string {
     return this.reminder.color ? `background-${this.reminder.color.toLocaleLowerCase()}` : '';
   }
-
 }

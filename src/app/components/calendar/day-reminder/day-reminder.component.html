@@ -1,6 +1,11 @@
 <div>
+  <div *ngIf="showLoading"class="loading">
+    <mat-spinner [diameter]="30"></mat-spinner>
+  </div>
   <div class="reminders-list" *ngIf="reminders.length > 0">
-    <button mat-button class="remove-all" (click)="removeAllReminders()"><mat-icon>delete</mat-icon></button>
+    <button mat-icon-button
+    matTooltip="Delete all reminders for this date"
+    class="remove-all" (click)="removeAllReminders()"><mat-icon>delete</mat-icon></button>
     <div class="reminders" *ngFor="let reminder of reminders">
       <app-reminder-label 
       *ngIf="reminder"

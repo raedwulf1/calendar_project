@@ -1,13 +1,13 @@
   <mat-card class="general-reminder" [ngClass]="getClassBackground()">
     <div class="label-buttons">
-      <button (click)="editReminderAction()" mat-icon-button>
+      <button (click)="editReminderAction()" matTooltip="Edit this reminder" mat-icon-button>
         <mat-icon>create</mat-icon>
       </button>
-      <button (click)="removeReminderAction()" mat-icon-button>
+      <button (click)="removeReminderAction()" matTooltip="Delete this reminder" mat-icon-button>
         <mat-icon>delete</mat-icon>
       </button>
     </div>
-    <div>
+    <div class="info-contain">
      <p>
       Reminder: {{ reminder?.text }}
      </p>

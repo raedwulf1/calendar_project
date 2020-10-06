@@ -1,5 +1,4 @@
 
-
 .calendar-table {
   border-collapse: collapse;
   width: 100%;
@@ -7,9 +6,11 @@
   margin-bottom: 1rem;
   border: 1px solid #dee2e6;
   background-color: #fff;
-
+  
   --header-color: #057ef7;
   --borders-color: #dee2e6;
+  --no-month-days-color: gray;
+  --shadow: black;
 }
 
 .calendar-table thead th {
@@ -43,9 +44,17 @@
 }
 
 .not-current-month-date {
-  background-color: gray;
+  background-color: var(--no-month-days-color);
 }
 
 .calendar-day{
   overflow: auto;
+}
+
+.is-today{
+  box-shadow: inset 1px 1px 5px 0px var(--shadow);
+}
+
+.old-day {
+  color: blue
 }
